@@ -1,0 +1,85 @@
+.container {
+  flex: 3.5;
+  height: calc(100vh - 50px);
+  position: sticky !important;
+  top: 50px;
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: gray;
+}
+.wrapper {
+  padding: 20px 20px 0 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.info {
+  margin-bottom: 30px;
+}
+
+.info-item {
+  margin-bottom: 10px;
+}
+
+.info-key {
+  font-weight: bold;
+  margin-right: 15px;
+  color: #555;
+}
+
+.info-value {
+  font-weight: lighter;
+}
+
+.following {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.following-item {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.following-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.follow-button {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  border: none;
+  background-color: #1872f2;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.follow-button:focus {
+  outline: none;
+}

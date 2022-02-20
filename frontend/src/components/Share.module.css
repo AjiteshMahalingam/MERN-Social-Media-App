@@ -1,0 +1,90 @@
+.container {
+  width: 100%;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 19px -8px rgba(0, 0, 0, 0.66);
+  box-shadow: 0px 0px 19px -8px rgba(0, 0, 0, 0.66);
+}
+
+.wrapper {
+  padding: 10px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+}
+
+.friend-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.share-input {
+  border: none;
+  width: 80%;
+}
+
+.share-input:focus {
+  outline: none;
+}
+
+.share-hr {
+  margin: 20px;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.share-options {
+  display: flex;
+  margin-left: 20px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.share-icon {
+  font-size: 18px;
+  margin-right: 3px;
+}
+
+.option-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.share-btn {
+  border: none;
+  padding: 7px;
+  border-radius: 5px;
+  background-color: rgb(27, 138, 189);
+  font-weight: 500;
+  margin-right: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.share-image-conatiner {
+  padding: 0px 20px 10px 20px;
+  position: relative;
+}
+
+.share-image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.share-cancel {
+  right: 0;
+  cursor: pointer;
+}

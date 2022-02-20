@@ -1,0 +1,89 @@
+.container {
+  height: 50px;
+  width: 100%;
+  background-color: #1877f2;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.left {
+  flex: 3;
+}
+
+.logo {
+  font-size: 24px;
+  margin-left: 20px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+.center {
+  flex: 5;
+}
+
+.searchbar {
+  width: 100%;
+  height: 30px;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.searchinput {
+  border: none;
+  width: 70%;
+}
+
+.searchinput:focus {
+  outline: none;
+}
+.icon-search {
+  font-size: 20px !important;
+  margin-left: 10px;
+}
+.right {
+  flex: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+}
+
+.links {
+  margin-right: 10px;
+  font-size: 14px;
+}
+.link-item {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.icons {
+  display: flex;
+}
+.icon-item {
+  margin: 15px;
+  cursor: pointer;
+  position: relative;
+}
+.icon-badge {
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  justify-content: center;
+  font-size: 12;
+}
+.image {
+  width: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+}

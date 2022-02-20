@@ -1,0 +1,16 @@
+.container {
+  flex: 5.5;
+  height: calc(100vh - 50px);
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.wrapper {
+  padding: 20px;
+}

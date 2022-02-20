@@ -1,0 +1,29 @@
+{
+  "name": "social-media-app",
+  "version": "1.0.0",
+  "description": "MERN Social Media App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./backend/app.js",
+    "server": "nodemon backend/app",
+    "client": "npm start --prefix frontend",
+    "chat": "nodemon chat-server/index",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run chat\""
+  },
+  "author": "Ajitesh Mahalingam",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^7.0.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "sharp": "^0.30.1",
+    "validator": "^13.7.0"
+  }
+}
