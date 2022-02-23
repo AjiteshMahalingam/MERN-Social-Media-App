@@ -1,11 +1,11 @@
-import { FOLLOW_SUCCESS, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS, TOKEN_FAIL, TOKEN_REQUEST, TOKEN_SUCCESS, UNFOLLOW_SUCCESS } from "./AuthConstants";
+import { FOLLOW_SUCCESS, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAIL, LOGOUT_REQUEST, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS, TOKEN_FAIL, TOKEN_REQUEST, TOKEN_SUCCESS, UNFOLLOW_SUCCESS } from "./AuthConstants";
 
 const AuthReducer = (state, action) => {
+    console.log(action);
     switch (action.type) {
         case LOGIN_REQUEST:
             return {
                 ...state,
-                user: null,
                 loading: true,
                 error: null
             };
@@ -20,7 +20,26 @@ const AuthReducer = (state, action) => {
         case LOGIN_FAIL:
             return {
                 ...state,
+                loading: false,
+                error: action.payload
+            };
+        case LOGOUT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null
+            };
+        case LOGOUT_SUCCESS:
+            return {
+                ...state,
                 user: null,
+                token: '',
+                loading: false,
+                error: null
+            };
+        case LOGOUT_FAIL:
+            return {
+                ...state,
                 loading: false,
                 error: action.payload
             };

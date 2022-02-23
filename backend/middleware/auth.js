@@ -10,6 +10,7 @@ const auth = async (req, res, next) => {
             throw new Error();
         req.isAdmin = user.isAdmin;
         req.userId = user._id.toString();
+        req.token = token;
         next();
     } catch (e) {
         res.status(401).send({ "error": "Please Authenticate" });

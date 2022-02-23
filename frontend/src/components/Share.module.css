@@ -31,8 +31,14 @@
   outline: none;
 }
 
+.emoji-icon {
+  margin-left: 5px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
 .share-hr {
-  margin: 20px;
+  margin: 15px;
 }
 
 .bottom {

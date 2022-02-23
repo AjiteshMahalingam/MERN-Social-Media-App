@@ -7,32 +7,52 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './Share.module.css';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import Picker from 'emoji-picker-react';
 import { PostContext } from '../context/PostContext';
 import { CREATE_POST_FAIL, CREATE_POST_REQUEST, CREATE_POST_SUCCESS } from '../context/PostConstants';
 
 const Share = () => {
     const { dispatch } = useContext(PostContext);
     const { user, token } = useContext(AuthContext);
+    const [showPicker, setShowPicker] = useState(false);
     const [file, setFile] = useState(null);
+
     const desc = useRef();
+
+    const onEmojiClick = (event, emojiObject) => {
+        desc.current.value = desc.current.value + emojiObject.emoji;
+        setShowPicker(false);
+    };
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        const newPost = new FormData();
-        newPost.append('userId', user._id.toString());
-        newPost.append('description', desc.current.value);
+        const newPost = {
+            userId: user._id.toString(),
+            description: desc.current.value
+        }
+        const reqConfig = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
         if (file) {
-            newPost.append('file', file);
+            const data = new FormData();
+            const fileName = Date.now() + file.name;
+            data.append("name", fileName);
+            data.append("file", file);
+            newPost.image = fileName;
+            console.log(newPost);
+            try {
+                await axios.post("/api/upload", data, reqConfig);
+            } catch (err) {
+                console.log(err);
+            }
         }
         try {
             dispatch({
                 type: CREATE_POST_REQUEST
             });
-            const reqConfig = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            };
+
             const { data } = await axios.post('/api/posts/', newPost, reqConfig);
             dispatch({
                 type: CREATE_POST_SUCCESS,
@@ -54,23 +74,27 @@ const Share = () => {
     }
 
     const selectFileHandler = (e) => {
-        console.log(e.target.files);
+        // console.log(e.target.files);
         setFile(e.target.files[0])
     }
     return (
         <div className={styles['container']} >
             <div className={styles['wrapper']}>
                 <div className={styles['top']}>
-                    <img src={user.profileImg || 'http://localhost:3000/assets/default_dp.png'} alt="" className={styles["friend-img"]} />
+                    <img src={user?.profilePicture || 'http://localhost:3000/assets/default_dp.png'} alt="" className={styles["friend-img"]} />
                     <input type="text" placeholder="What's in your mind?" className={styles['share-input']} ref={desc} />
+                    <img src="/assets/emoji.png" alt="" className={styles['emoji-icon']} onClick={() => setShowPicker(val => !val)} />
                 </div>
+                {showPicker && <Picker
+                    pickerStyle={{ width: '100%' }}
+                    onEmojiClick={onEmojiClick} />}
                 <hr className={styles["share-hr"]} />
-                {file && (
+                {file &&
                     <div className={styles["share-image-container"]}>
                         <CancelIcon className={styles["share-cancel"]} onClick={cancelHandler} />
                         <img src={URL.createObjectURL(file)} alt="" className={styles["share-image"]} />
                     </div>
-                )}
+                }
                 <form className={styles['bottom']} onSubmit={submitHandler} >
                     <div className={styles["share-options"]}>
                         <label htmlFor='file' className={styles["option"]}>
@@ -79,7 +103,8 @@ const Share = () => {
                             <input type="file" id='file' name='file'
                                 accept='.png,.jpg,.jpeg'
                                 onChange={selectFileHandler}
-                                style={{ display: 'none' }} />
+                                style={{ display: 'none' }} multiple />
+
                         </label>
                         <div className={styles["option"]}>
                             <LabelIcon htmlColor='blue' className={styles['share-icon']} />
@@ -88,10 +113,6 @@ const Share = () => {
                         <div className={styles["option"]}>
                             <AddLocationAltIcon htmlColor='green' className={styles['share-icon']} />
                             <span className={styles["option-text"]}>Location</span>
-                        </div>
-                        <div className={styles["option"]}>
-                            <EmojiEmotionsIcon htmlColor='goldenrod' className={styles['share-icon']} />
-                            <span className={styles["option-text"]}>Feelings</span>
                         </div>
                     </div>
                     <button className={styles['share-btn']} type='submit'>Share Post</button>

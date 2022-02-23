@@ -18,6 +18,31 @@ router.get("/", async (req, res) => {
     }
 });
 
+// @desc Get all username
+// @route GET /api/users/all
+// @access Public
+router.get("/all", async (req, res) => {
+    try {
+        const users = await User.find({ isAdmin: false });
+        const usernameList = users.map(user => user.username);
+        res.status(200).send(usernameList);
+    } catch (e) {
+        res.status(400).send({ "error": e.message })
+    }
+});
+
+router.post('/logout', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        user.tokens = user.tokens.filter((token) => {
+            return token.token !== req.token;
+        })
+        await user.save();
+        res.status(200).send({ 'message': 'Successfully logged out' });
+    } catch (e) {
+        res.status(500).send({ 'error': e.message });
+    }
+});
 // @desc Update user
 // @route PUT /api/users/:id
 // @access Protected

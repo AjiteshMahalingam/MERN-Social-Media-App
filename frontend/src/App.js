@@ -2,6 +2,7 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import ProfileUpdateScreen from './screens/ProfileUpdateScreen';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './context/AuthContext';
@@ -15,16 +16,15 @@ function App() {
 
   useEffect(() => {
     const getUser = async () => {
-      const _token = window.localStorage.getItem('token');
-      if (_token) {
+      if (token) {
         try {
           dispatch({
             type: TOKEN_REQUEST
           });
-          const { data } = await axios.post(`/api/auth/token?token=${_token}`, {});
+          const { data } = await axios.post(`/api/auth/token?token=${token}`, {});
           dispatch({
             type: TOKEN_SUCCESS,
-            payload: { user: data, token: _token }
+            payload: { user: data, token: token }
           });
         } catch (err) {
           dispatch({
@@ -35,11 +35,12 @@ function App() {
       }
     }
     getUser();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   if (loading) {
     return <CircularProgress />
   }
+  // console.log(user);
   return (
     <Switch>
       <Route path='/' exact>
@@ -52,7 +53,10 @@ function App() {
         {user ? <Redirect to='/' /> : <RegisterScreen />}
       </Route>
       <Route path='/messenger'>
-        {!user ? <Redirect to='/' /> : <MessengerScreen />}
+        {!user ? <Redirect to='/login' /> : <MessengerScreen />}
+      </Route>
+      <Route path='/profile/update' exact>
+        {!user ? <Redirect to='/login' /> : <ProfileUpdateScreen />}
       </Route>
       <Route path='/profile/:username?'>
         <ProfileScreen />

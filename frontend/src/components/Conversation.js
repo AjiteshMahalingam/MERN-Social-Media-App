@@ -20,16 +20,9 @@ const Conversation = ({ conversation }) => {
         getUser();
     }, [currentUser, conversation]);
 
-    const arrayBufferToBase64 = (buffer) => {
-        var binary = '';
-        var bytes = [].slice.call(new Uint8Array(buffer));
-        bytes.forEach((b) => binary += String.fromCharCode(b));
-        return window.btoa(binary);
-    };
-
     return (
         <div className={styles['container']}>
-            <img src={user?.profilePicture ? `data:image/png;base64,${arrayBufferToBase64(user.profilePicture.data)}` : 'http://localhost:3000/assets/default_dp.png'} alt="" className={styles['image']} />
+            <img src={user?.profilePicture || 'http://localhost:3000/assets/default_dp.png'} alt="" className={styles['image']} />
             <span className={styles['name']}>{user?.username}</span>
         </div>
     )

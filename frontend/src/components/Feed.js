@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styles from './Feed.module.css';
 import Post from './Post';
 import Share from './Share';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { PostContext } from '../context/PostContext';
@@ -12,7 +12,10 @@ import { CircularProgress } from '@mui/material';
 const Feed = () => {
     const { posts, dispatch, loading, error } = useContext(PostContext);
     const { user } = useContext(AuthContext);
-    const location = useLocation();
+    const match = useRouteMatch();
+    const [isCurrentUser, setIsCurrentUser] = useState(false);
+
+
     const getPosts = useCallback(async (url) => {
         try {
             dispatch({
@@ -34,17 +37,24 @@ const Feed = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (location.pathname === '/') {
+        if (match.url === '/') {
             getPosts('/api/posts/timeline/' + user._id.toString());
+            setIsCurrentUser(true);
         } else {
-            getPosts('/api/posts' + location.pathname);
+            getPosts('/api/posts' + match.url);
+            if (match.params.username === user.username) {
+                setIsCurrentUser(true);
+            } else {
+                setIsCurrentUser(false);
+            }
         }
-    }, [location.pathname, user._id, getPosts]);
+    }, [match.url, user._id, getPosts, match.params, user.username]);
+
 
     return (
         <div className={styles['container']}>
             <div className={styles["wrapper"]}>
-                <Share />
+                {isCurrentUser && <Share />}
                 {loading
                     ? <CircularProgress />
                     : <>

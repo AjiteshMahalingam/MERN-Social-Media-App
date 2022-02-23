@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import styles from './RegisterScreen.module.css';
 import axios from 'axios';
@@ -7,44 +7,48 @@ import { AuthContext } from '../context/AuthContext';
 import { REGISTER_FAIL, REGISTER_REQUEST, REGISTER_SUCCESS } from '../context/AuthConstants';
 
 const RegisterScreen = () => {
-    const username = useRef();
-    const email = useRef();
-    const password = useRef();
-    const repassword = useRef();
+    const [values, setValues] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
 
     const { loading, error, dispatch } = useContext(AuthContext);
     const history = useHistory();
 
     const registerHandler = async (e) => {
         e.preventDefault();
-        if (password.current.value !== repassword.current.value) {
-            password.current.setCustomValidity("Passwords didn't match");
-        } else {
-            dispatch({
-                type: REGISTER_REQUEST
+
+        dispatch({
+            type: REGISTER_REQUEST
+        });
+        try {
+            const { data } = await axios.post('/api/auth/register', {
+                username: values.username,
+                password: values.password,
+                email: values.email
             });
-            try {
-                const { data } = await axios.post('/api/auth/register', {
-                    username: username.current.value,
-                    password: password.current.value,
-                    email: email.current.value
-                });
-                dispatch({
-                    type: REGISTER_SUCCESS,
-                    payload: data
-                });
-                window.localStorage.setItem("token", data.token);
-                window.localStorage.setItem("user", JSON.stringify(data.user));
-                history.push('/');
-            } catch (e) {
-                console.log(e);
-                dispatch({
-                    type: REGISTER_FAIL,
-                    payload: e
-                });
-            }
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: data
+            });
+            window.localStorage.setItem("token", data.token);
+            window.localStorage.setItem("user", JSON.stringify(data.user));
+            history.push('/profile/update');
+        } catch (e) {
+            console.log(e);
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: e
+            });
         }
+
     }
+
+    const changeHandler = (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+    };
     return (
         <div className={styles['container']}>
             <div className={styles['wrapper']}>
@@ -54,10 +58,47 @@ const RegisterScreen = () => {
                 </div>
                 <div className={styles['right']}>
                     <form className={styles['register-box']} onSubmit={registerHandler}>
-                        <input type="text" name="username" className={styles['register-input']} placeholder='Enter Username' ref={username} required />
-                        <input type="email" name="email" className={styles['register-input']} placeholder='Enter Email' ref={email} required />
-                        <input type="password" name="password" className={styles['register-input']} placeholder='Enter Password' ref={password} required minLength={7} />
-                        <input type="password" name="re-password" className={styles['register-input']} placeholder='Re-Enter Password' ref={repassword} required minLength={7} />
+                        <input
+                            type="text"
+                            name="username"
+                            className={styles['register-input']}
+                            placeholder='Enter Username'
+                            required
+                            errorMessage='Username name should atleast 7 characters long'
+                            minLength={7}
+                            onChange={changeHandler}
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            className={styles['register-input']}
+                            placeholder='Enter Email'
+                            required
+                            errorMessage='Enter valid email address'
+                            onChange={changeHandler}
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            className={styles['register-input']}
+                            placeholder='Enter Password'
+                            required
+                            minLength={7}
+                            errorMessage="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
+                            pattern={`^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`}
+                            onChange={changeHandler}
+                        />
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            className={styles['register-input']}
+                            placeholder='Confirm Password'
+                            required
+                            minLength={7}
+                            errorMessage="Passwords don't match!"
+                            pattern={values.password}
+                            onChange={changeHandler}
+                        />
                         {loading ? <CircularProgress className={styles['loader']} /> : <>
                             <button className={styles['button-register']} type='submit' >Sign Up</button>
                             <Link to='/login'>

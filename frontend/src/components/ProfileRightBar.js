@@ -11,7 +11,6 @@ const ProfileRightBar = ({ user }) => {
     const [friendsList, setFriendsList] = useState([]);
     const { user: currentUser, token, dispatch } = useContext(AuthContext);
     const [followed, setFollowed] = useState(currentUser.following.includes(user._id.toString()));
-
     useEffect(() => {
         const getFriendsList = async () => {
             try {
@@ -26,24 +25,18 @@ const ProfileRightBar = ({ user }) => {
 
     let relationshipStatus;
     switch (user.relationship) {
-        case 1:
+        case '1':
             relationshipStatus = 'Single';
             break;
-        case 2:
+        case '2':
             relationshipStatus = 'In a relationship';
             break;
-        case 3:
+        case '3':
             relationshipStatus = 'Married';
             break;
         default:
             relationshipStatus = 'Unknown';
     }
-    const arrayBufferToBase64 = (buffer) => {
-        var binary = '';
-        var bytes = [].slice.call(new Uint8Array(buffer));
-        bytes.forEach((b) => binary += String.fromCharCode(b));
-        return window.btoa(binary);
-    };
 
     const followHandler = async () => {
         try {
@@ -58,17 +51,19 @@ const ProfileRightBar = ({ user }) => {
                     type: UNFOLLOW_SUCCESS,
                     payload: user._id.toString()
                 });
+                setFollowed(false);
             } else {
                 await axios.put(`/api/users/${user._id.toString()}/follow`, {}, reqConfig);
                 dispatch({
                     type: FOLLOW_SUCCESS,
                     payload: user._id.toString()
                 });
+                setFollowed(true);
             }
         } catch (err) {
             console.log(err);
         }
-        setFollowed(prev => !prev);
+
     }
     return (
         <>
@@ -76,8 +71,8 @@ const ProfileRightBar = ({ user }) => {
                 <div className={styles['wrapper']}>
                     {user.username !== currentUser.username && (
                         <button className={styles['follow-button']} onClick={followHandler} >
-                            {followed ? "Unfollow" : "Follow"}
-                            {followed ? <RemoveIcon /> : <AddIcon />}
+                            {followed || currentUser.following.includes(user._id.toString()) ? "Unfollow" : "Follow"}
+                            {followed || currentUser.following.includes(user._id.toString()) ? <RemoveIcon /> : <AddIcon />}
                         </button>
                     )}
                     <h4 className={styles['title']}>User Information</h4>
@@ -98,13 +93,17 @@ const ProfileRightBar = ({ user }) => {
                             <span className={styles['info-key']}>Relationship : </span>
                             <span className={styles['info-value']}>{relationshipStatus}</span>
                         </div>
+                        {user.username === currentUser.username &&
+                            <Link to='/profile/update'>
+                                <button>Update Profile</button>
+                            </Link>}
                     </div>
                     <h4 className={styles['title']}>User Friends</h4>
                     <div className={styles['following']}>
                         {friendsList.map(friend =>
                             <Link to={`/profile/${friend.username}`} style={{ textDecoration: 'none' }} key={friend._id.toString()} >
                                 <div className={styles['following-item']} >
-                                    <img src={friend.profilePicture ? `data:image/png;base64,${arrayBufferToBase64(friend.profilePicture.data)}` : 'http://localhost:3000/assets/default_dp.png'} alt="" className={styles['following-img']} />
+                                    <img src={friend?.profilePicture || 'http://localhost:3000/assets/default_dp.png'} alt="" className={styles['following-img']} />
                                     <span className={styles['following-name']}>{friend.username}</span>
                                 </div>
                             </Link>

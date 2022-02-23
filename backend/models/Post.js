@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
         maxlength: 500
     },
     image: {
-        type: Buffer
+        type: String
     },
     likes: {
         type: Array,
@@ -32,6 +32,9 @@ const postSchema = new mongoose.Schema({
             type: String,
             required: true,
             trim: true
+        },
+        postedAt: {
+            type: Date
         }
     }]
 }, {

@@ -58,7 +58,7 @@ const SideBar = () => {
                 <ul className={styles["friends-list"]}>
                     {Users.map(user => (
                         <li className={styles["friend-item"]} key={user.id}>
-                            <img src="https://s2.favim.com/orig/151125/daniel-radcliffe-harry-potter-young-and-handsome-Favim.com-3646292.jpg" alt="" className={styles["friend-img"]} />
+                            <img src={'http://localhost:3000/assets/default_dp.png'} alt="" className={styles["friend-img"]} />
                             <span className={styles["friend-name"]}>{user.username}</span>
                         </li>
                     ))}

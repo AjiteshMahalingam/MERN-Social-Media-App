@@ -23,21 +23,30 @@ const MessengerScreen = () => {
     useEffect(() => {
         socket.current = io('ws://localhost:8900');
         socket.current.on('getMessage', data => {
-            setIncomingMessage({
+            console.log(currentChat);
+            setMessages([...messages, {
                 // _id: Math.random(),
                 sender: data.senderId,
                 text: data.text,
                 createdAt: Date.now()
-            });
-            console.log('Message incoming..', data.senderId, data.text, Date.now());
+            }]);
+            console.log('Message incoming..', data);
+            // if (currentChat?.members.includes(data.senderId)) {
+            // }
         });
     }, []);
 
-    useEffect(() => {
-        console.log('In update useEffect ' + incomingMessage);
-        incomingMessage && currentChat?.members.includes(incomingMessage.sender) &&
-            setMessages(prev => [...prev, incomingMessage]);
-    }, [incomingMessage, currentChat]);
+    // useEffect(() => {
+    // }, [])
+
+
+    // useEffect(() => {
+    //     console.log('In update useEffect ' + incomingMessage);
+    //     console.log(currentChat?.members.includes(incomingMessage?.sender));
+    //     incomingMessage && currentChat?.members.includes(incomingMessage.sender) &&
+
+    //     console.log(messages);
+    // }, [incomingMessage, currentChat]);
 
     useEffect(() => {
         socket.current.emit('addUser', user._id);
@@ -98,7 +107,7 @@ const MessengerScreen = () => {
                 conversationId: currentChat._id.toString()
             }
             const recvId = currentChat.members.find(member => member !== user._id.toString());
-            console.log('In send message handler');
+            // console.log('In send message handler');
             socket.current.emit('sendMessage', {
                 senderId: user._id.toString(),
                 recvId,
@@ -140,7 +149,7 @@ const MessengerScreen = () => {
                             <>
                                 <div className={styles['chat-box-top']}>
                                     {messages.map(msg => (
-                                        <div key={msg._id.toString()} ref={scrollRef}>
+                                        <div key={Math.random()} ref={scrollRef}>
                                             <Message message={msg} own={msg.sender.toString() === user._id.toString()} />
                                         </div>
                                     ))}

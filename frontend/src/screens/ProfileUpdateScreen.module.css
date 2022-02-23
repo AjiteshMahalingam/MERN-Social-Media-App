@@ -1,0 +1,85 @@
+.container {
+  width: 100%;
+  height: calc(100vh - 70px);
+  display: flex;
+  justify-content: space-around;
+  overflow-y: scroll;
+}
+
+.wrapper {
+  border-radius: 10px;
+  padding: 10px 30px;
+  height: fit-content;
+  -webkit-box-shadow: 0px 0px 19px -8px rgba(0, 0, 0, 0.66);
+  box-shadow: 0px 0px 19px -8px rgba(0, 0, 0, 0.66);
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3c88eb;
+}
+
+.hr {
+  color: #3c88eb;
+  margin: 10px auto;
+}
+
+.form-input {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.form-input > input {
+  padding: 5px;
+  width: 80%;
+  margin-left: 10px;
+}
+
+.form-input > p {
+  font-size: 12px;
+  padding: 3px;
+  color: red;
+}
+
+.form-input-radio {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.form-input-radio > div {
+  margin: 3px;
+}
+
+.form-input-radio-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input-radio-col > input {
+  padding-right: 3px;
+}
+
+.form-input-radio-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.form-button {
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: #1775ee;
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.icon {
+  color: #3c88eb;
+}

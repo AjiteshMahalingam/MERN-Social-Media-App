@@ -32,6 +32,9 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         maxlength: 100
     },
+    birthday: {
+        type: Date
+    },
     address: {
         type: String,
         trim: true
@@ -45,10 +48,10 @@ const UserSchema = new mongoose.Schema({
         trim: true
     },
     profilePicture: {
-        type: Buffer
+        type: String
     },
     coverPicture: {
-        type: Buffer
+        type: String
     },
     followers: {
         type: Array,

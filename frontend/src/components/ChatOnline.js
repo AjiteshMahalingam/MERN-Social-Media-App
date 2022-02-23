@@ -19,14 +19,14 @@ const ChatOnline = ({ onlineUsers, currentId, setCurrentChat }) => {
     }, [currentId]);
 
     useEffect(() => {
-        setOnlineFriends(friends.filter(f => onlineUsers.includes(f._id.toString())));
-    }, [friends]);
+        setOnlineFriends(friends.filter(f => onlineUsers.includes(f._id)));
+    }, [friends, onlineUsers]);
 
-    console.log(onlineFriends);
+    // console.log(friends);
     return (
         <div className={styles['container']}>
             {onlineFriends.map(o => {
-                <div className={styles['online-friend']} key={o._id.toString()} onClick={ }>
+                <div className={styles['online-friend']} key={o?._id.toString()} >
                     <div className={styles['image-container']}>
                         <img src="http://localhost:3000/assets/default_dp.png" alt="" className={styles['image']} />
                         <div className={styles['online-badge']}></div>

@@ -1,0 +1,50 @@
+.container {
+  margin-top: 20px;
+}
+
+.container > hr {
+  color: gray;
+}
+.comment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.comment-user-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 1;
+  margin-right: 10px;
+}
+.comment-left {
+  display: flex;
+  max-width: 70%;
+}
+.comment-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: bold;
+}
+.text {
+  font-size: 15px;
+  flex: 7;
+  max-width: 300px;
+  word-wrap: break-word;
+  display: block;
+}
+.time {
+  font-size: 12px;
+  flex: 2;
+  margin-left: 5px;
+}
+
+.delete-icon {
+  cursor: pointer;
+}
